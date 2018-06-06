@@ -1,0 +1,40 @@
+/* <code courtesy  ravikiran_papani on Oct 15, 2015 7:26 PM on Adobe forum> */
+ 
+JackrabbitAccessControlList sourceAcl = getAcl(acm, sourcePath);
+JackrabbitAccessControlList targetAcl = getAcl(acm, targetPath); 
+AccessControlPolicies []sourcePols = sourceAcl.getAccessControlEntries();
+ 
+for (AccessControlEntry ace: accessControlEntries) {
+   Principal principal = ace.getPrincipal();
+   Privilege [] privileges = ace.getPrivileges();
+   targetAcl.addEntry(principal, privileges, true, null);//true for allow entry, false for deny entry
+}
+acm.setPolicy(targetPath, targetAcl);
+session.save();
+{code}
+{code}
+
+ 
+JackrabbitAccessControlList getAcl(AccessControlManager acm,
+String path) {
+try {
+AccessControlPolicyIterator app = acm.getApplicablePolicies(path);
+while (app.hasNext()) {
+AccessControlPolicy pol = app.nextAccessControlPolicy();
+if (pol instanceof JackrabbitAccessControlPolicy) {
+return (JackrabbitAccessControlList) pol;
+}
+}
+// no found...check if present
+for (AccessControlPolicy pol : acm.getPolicies(path)) {
+if (pol instanceof JackrabbitAccessControlPolicy) {
+return (JackrabbitAccessControlList) pol;
+}
+}
+} catch (RepositoryException e) {
+log.warn("Error while retrieving ACL for {}: {}", path,
+e.toString());
+}
+return null;
+}
+/*<code>*/
