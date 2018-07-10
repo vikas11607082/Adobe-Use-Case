@@ -1,4 +1,4 @@
-/* <code courtesy  ravikiran_papani on Oct 15, 2015 7:26 PM on Adobe forum> */
+/* <code courtesy: @ravikiran_papani on Oct 15, 2015 7:26 PM on Adobe forum> */
  
 JackrabbitAccessControlList sourceAcl = getAcl(acm, sourcePath);
 JackrabbitAccessControlList targetAcl = getAcl(acm, targetPath); 
